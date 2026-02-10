@@ -1,0 +1,21 @@
+# Web框架
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+python-multipart==0.0.6
+
+# WebSocket支持
+websockets==12.0
+
+# AI模型相关
+torch>=2.0.0
+transformers>=4.36.0
+modelscope>=1.11.0
+accelerate>=0.25.0
+
+# API客户端
+openai>=1.10.0
+httpx>=0.26.0
+
+# 工具库
+numpy>=1.24.0
