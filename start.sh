@@ -6,7 +6,7 @@ echo "🚀 启动XGuard越狱优化器"
 
 # 检查Python虚拟环境
 if [ ! -d "xguard_env" ]; then
-    echo "❌ 虚拟环境不存在,请先创建虚拟环境"
+    echo "❌ 虚拟环境不存在,请先创建虚拟环境 xguard_env 例如：python3 -m venv xguard_env"
     exit 1
 fi
 
@@ -52,7 +52,7 @@ echo "按Ctrl+C停止服务"
 cleanup() {
     echo ''
     echo '🛑 正在停止服务...'
-    
+
     # 发送SIGTERM信号给后端(让FastAPI lifespan处理清理)
     if [ ! -z "$BACKEND_PID" ] && kill -0 $BACKEND_PID 2>/dev/null; then
         echo "  ⏹ 停止后端服务 (PID: $BACKEND_PID)"
@@ -67,7 +67,7 @@ cleanup() {
         # 如果还未关闭,强制结束
         kill -9 $BACKEND_PID 2>/dev/null
     fi
-    
+
     # 停止前端服务
     if [ ! -z "$FRONTEND_PID" ] && kill -0 $FRONTEND_PID 2>/dev/null; then
         echo "  ⏹ 停止前端服务 (PID: $FRONTEND_PID)"
@@ -75,7 +75,7 @@ cleanup() {
         sleep 1
         kill -9 $FRONTEND_PID 2>/dev/null
     fi
-    
+
     echo '✅ 所有服务已停止'
     exit 0
 }

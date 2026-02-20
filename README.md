@@ -9,17 +9,13 @@
 - **多模型支持**: 支持 OpenAI(GPT-3.5/4)和阿里云通义千问(Qwen-Plus/Turbo/Max)
 - **实时可视化**: 前端实时展示优化进度、风险分数和详细分析结果
 
-## 技术栈
-
-**后端**: FastAPI + PyTorch + ModelScope + WebSocket
-**前端**: React + Vite + Ant Design
-
 ## 快速开始
 
 ### 1. 环境准备
 
 ```bash
 # 激活 Python 虚拟环境
+python3 -m venv xguard_env
 source xguard_env/bin/activate
 
 # 安装后端依赖
@@ -37,6 +33,7 @@ cd frontend && npm install
 ./start.sh
 ```
 
+
 **方式二: 手动启动**
 
 ```bash
@@ -53,6 +50,9 @@ cd frontend && npm run dev
 - 后端 API: http://localhost:8000
 - API 文档: http://localhost:8000/docs
 
+
+页面如下：
+![img.png](img/img1.png)
 ## 使用说明
 
 ### 安全检测器
@@ -70,6 +70,12 @@ cd frontend && npm run dev
    - **Goal3**: 仅 Prompt 检测(优化越狱提示词安全性,仅需优化LLM,无需下游模型)
 3. 根据目标配置相应的 API 密钥和模型
 4. 开始优化,实时查看测试进度和结果
+
+## 技术栈
+
+**后端**: FastAPI + PyTorch + ModelScope + WebSocket
+
+**前端**: React + Vite + Ant Design
 
 ## 项目结构
 
