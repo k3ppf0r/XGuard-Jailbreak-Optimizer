@@ -13,15 +13,27 @@ export default function ProgressTimeline({ data }) {
         const score = item.score || 0;
 
         return (
-          <Timeline.Item key={index} color={score > 0.7 ? 'green' : score > 0.4 ? 'orange' : 'red'}>
+          <Timeline.Item key={index} color={item.skipped ? 'gray' : score > 0.7 ? 'green' : score > 0.4 ? 'orange' : 'red'}>
             <div style={{ marginBottom: 16 }}>
               <div style={{ marginBottom: 8 }}>
                 <strong>迭代 {item.iteration + 1} - 候选 {item.candidate_index + 1}</strong>
-                <Tag color={score > 0.7 ? 'green' : score > 0.4 ? 'orange' : 'red'} style={{ marginLeft: 8 }}>
-                  综合得分: {(score * 100).toFixed(2)}%
-                </Tag>
+                {item.skipped ? (
+                  <Tag color="default" style={{ marginLeft: 8 }}>跳过: {item.skipped}</Tag>
+                ) : (
+                  <Tag color={score > 0.7 ? 'green' : score > 0.4 ? 'orange' : 'red'} style={{ marginLeft: 8 }}>
+                    综合得分: {(score * 100).toFixed(2)}%
+                  </Tag>
+                )}
               </div>
 
+              {item.skipped ? (
+                <pre style={{
+                  background: '#f5f5f5', padding: 8, borderRadius: 4,
+                  fontSize: '12px', maxHeight: '60px', overflow: 'auto',
+                  whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#999'
+                }}>{item.candidate}</pre>
+              ) : (
+                <>
               <div style={{ marginBottom: 12 }}>
                 <Tag color={promptSafe > 0.5 ? 'green' : 'red'}>
                   Prompt通过检测: {(promptSafe * 100).toFixed(2)}%
@@ -143,6 +155,8 @@ export default function ProgressTimeline({ data }) {
                   },
                 ]}
               />
+                </>
+              )}
             </div>
           </Timeline.Item>
         );

@@ -1,4 +1,4 @@
-import { Form, Input, Select, Button, Card, Alert, Spin, Row, Col, Statistic, Space } from 'antd';
+import { Form, Input, InputNumber, Select, Button, Card, Alert, Spin, Row, Col, Statistic, Space } from 'antd';
 import { ThunderboltOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { useState, useEffect, useRef } from 'react';
 import { startOptimization, createWebSocket } from '../api/client';
@@ -26,10 +26,11 @@ export default function OptimizerPanel() {
           });
           setProgress((prev) => {
             const newProgress = [...prev, message.data];
-            // 更新统计
-            const scores = newProgress.map(p => p.score || 0);
-            const bestScore = Math.max(...scores);
-            const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
+            // 更新统计（排除被跳过的候选）
+            const validItems = newProgress.filter(p => !p.skipped);
+            const scores = validItems.map(p => p.score || 0);
+            const bestScore = scores.length > 0 ? Math.max(...scores) : 0;
+            const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
             setStats({ total: newProgress.length, bestScore, avgScore });
             return newProgress;
           });
@@ -93,6 +94,7 @@ export default function OptimizerPanel() {
               objective: 'goal1',
               model_name: 'gpt-3.5-turbo',
               max_iterations: 5,
+              candidates_per_iteration: 8,
             }}
           >
             <Form.Item
@@ -182,16 +184,15 @@ export default function OptimizerPanel() {
             )}
 
             <Form.Item name="max_iterations" label="最大迭代次数">
-              <Input type="number" min={1} max={20} />
+              <InputNumber min={1} max={20} style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item 
               name="candidates_per_iteration" 
               label="每轮测试候选数" 
               tooltip="每轮迭代从模板库中随机选择的候选数量,减少可提升速度"
-              initialValue={8}
             >
-              <Input type="number" min={3} max={20} />
+              <InputNumber min={3} max={20} style={{ width: '100%' }} />
             </Form.Item>
 
             <Button 
